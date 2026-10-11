@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChamFlick DE</title>
+<meta name="description" content="Every German noun in its colour, in books, scans and films. An Android reading app, coming soon.">
+<meta property="og:title" content="ChamFlick DE">
+<meta property="og:description" content="See the gender. Remember the word. Every German noun in its colour, in books, scans and films.">
+<meta property="og:image" content="media/brand.jpg">
+<meta name="theme-color" content="#051445">
+<link rel="icon" type="image/svg+xml" href="media/chameleon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Serif:ital,wght@0,400;0,700;1,700&display=swap">
+<style>
+/* One dark stage, the preview video's own: navy ground, serif for German and
+   headlines, sans for everything said about them, and four colours that only
+   ever mean a gender. */
+:root {
+  color-scheme: dark;
+  --navy0: #0C2466; --navy1: #051445; --navy2: #030B2E;
+  --m: #4A9BFF; --f: #FF4FA8; --n: #22C07A; --p: #FFB020;
+  --ink: #F3F5FB; --soft: #B4BEDA; --faint: #7F8BB0;
+  --line: rgba(255, 255, 255, .12); --panel: rgba(255, 255, 255, .045);
+  --serif: "Noto Serif", Georgia, "Times New Roman", serif;
+  --sans: "Noto Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --wide: 1120px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--navy2); color: var(--ink);
+  background-image: radial-gradient(120% 70% at 35% 0%, var(--navy0) 0%, var(--navy1) 45%, var(--navy2) 100%);
+  background-repeat: no-repeat; background-size: 100% 1400px;
+  font: 400 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased;
+}
+img, video { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--m); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: var(--wide); margin: 0 auto; padding-inline: 24px; }
+.m { color: var(--m); } .f { color: var(--f); } .n { color: var(--n); } .p { color: var(--p); }
+
+/* header */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 22px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand img { width: 44px; height: 44px; border-radius: 11px; }
+.word { font: 700 26px/1 var(--serif); letter-spacing: -.01em; }
+.de { font: 600 11px/1 var(--sans); letter-spacing: .08em; padding: 4px 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--soft); margin-left: 4px; vertical-align: middle; }
+.soon { font: 500 13px/1 var(--sans); letter-spacing: .04em; color: var(--soft); border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; }
+.soon b { color: var(--n); font-weight: 600; }
+
+/* hero */
+.hero { padding-block: 40px 28px; display: grid; gap: 28px; }
+.eyebrow { font: 600 12px/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--n); }
+h1 { font: 700 clamp(38px, 6.4vw, 76px)/1.04 var(--serif); letter-spacing: -.02em; margin: 0; text-wrap: balance; max-width: 15ch; }
+.lede { font-size: clamp(17px, 1.6vw, 20px); color: var(--soft); max-width: 56ch; margin: 0; }
+.table { display: flex; flex-wrap: wrap; gap: 14px 44px; align-items: flex-end; }
+.table div { display: grid; gap: 2px; }
+.table i { font: italic 700 20px/1.2 var(--serif); }
+.table b { font: 700 clamp(30px, 4.4vw, 50px)/1.1 var(--serif); }
+.table p { margin: 0; flex-basis: 100%; color: var(--faint); font-size: 15px; }
+
+/* video */
+.film { margin-block: 12px 0; }
+.film video { width: 100%; aspect-ratio: 16 / 9; background: var(--navy2); border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 30px 80px rgba(0, 0, 0, .45); }
+.film p { margin: 12px 0 0; color: var(--faint); font-size: 14px; }
+
+/* sections */
+section { padding-block: 64px 0; }
+h2 { font: 700 clamp(26px, 3.2vw, 38px)/1.15 var(--serif); letter-spacing: -.01em; margin: 10px 0 8px; text-wrap: balance; }
+.intro { color: var(--soft); max-width: 62ch; margin: 0 0 28px; }
+.shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 22px; }
+.shots.two { grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); }
+figure { margin: 0; min-width: 0; }
+figure a { display: block; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); transition: border-color .15s, transform .15s; }
+figure a:hover { border-color: rgba(255, 255, 255, .34); transform: translateY(-2px); }
+figcaption { margin-top: 10px; font-size: 14.5px; color: var(--soft); }
+figcaption b { color: var(--ink); font-weight: 600; }
+
+/* colour key */
+.key { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.key div { padding: 22px 20px 22px 0; border-bottom: 1px solid var(--line); }
+.key i { font: italic 700 30px/1 var(--serif); }
+.key small { display: block; font: 600 11px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--faint); margin: 10px 0 8px; }
+.key span { font: 700 19px/1.4 var(--serif); }
+.unsure { margin: 22px 0 0; color: var(--soft); max-width: 62ch; }
+.unsure u { text-decoration: underline dashed var(--faint); text-underline-offset: 5px; font-family: var(--serif); color: var(--ink); }
+
+/* promises */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 28px 40px; }
+.facts h3 { font: 700 21px/1.25 var(--serif); margin: 0 0 6px; }
+.facts p { margin: 0; color: var(--soft); font-size: 15.5px; }
+.has { margin: 36px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.has li { font: 500 13px/1 var(--sans); letter-spacing: .03em; padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px; color: var(--soft); background: var(--panel); }
+
+/* end */
+.end { text-align: center; padding-block: 84px 36px; display: grid; gap: 14px; justify-items: center; }
+.end img { width: 92px; height: 92px; border-radius: 22px; }
+.end h2 { margin: 6px 0 0; font-size: clamp(30px, 4.6vw, 52px); }
+.end p { margin: 0; color: var(--soft); }
+footer { border-top: 1px solid var(--line); margin-top: 40px; padding-block: 26px 44px; color: var(--faint); font-size: 13.5px; display: grid; gap: 6px; }
+footer p { margin: 0; max-width: 90ch; }
+
+@media (max-width: 520px) { .wrap { padding-inline: 16px; } section { padding-block: 48px 0; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } figure a { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <a class="brand" href="#top" aria-label="ChamFlick DE">
+    <img src="media/chameleon.svg" alt="" width="44" height="44">
+    <span class="word"><span class="m">Cham</span><span class="f">Flick</span><span class="de">DE</span></span>
+  </a>
+  <span class="soon"><b>●</b>&nbsp; Coming soon for Android</span>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <span class="eyebrow">German reading, in colour</span>
+    <h1>See the gender. Remember the word.</h1>
+    <p class="lede">ChamFlick DE colours every German noun by its gender while you read: in your own books, in scanned pages and in film subtitles. Tap any word for its meaning. It all runs on the phone.</p>
+    <div class="table" aria-label="der Löffel, die Gabel, das Messer">
+      <div><i class="m">der</i><b class="m">Löffel</b></div>
+      <div><i class="f">die</i><b class="f">Gabel</b></div>
+      <div><i class="n">das</i><b class="n">Messer</b></div>
+      <p>Spoon, fork, knife. Same table, three genders.</p>
+    </div>
+
+    <div class="film">
+      <video id="preview" controls preload="none" playsinline poster="media/brand.jpg" width="1920" height="1080">
+        <source src="media/chamflick-preview.mp4" type="video/mp4">
+        <a href="media/chamflick-preview.mp4">Watch the two-minute preview (MP4, 9 MB)</a>
+      </video>
+      <p>The two-minute preview. It has no sound yet; the music is still being written.</p>
+    </div>
+  </div>
+
+  <section class="wrap" aria-labelledby="h-key">
+    <span class="eyebrow">The colour key</span>
+    <h2 id="h-key">Four colours. Each one only ever means a gender.</h2>
+    <p class="intro">After a few pages the colour arrives before the article does. That is the point: you stop looking genders up and start remembering them.</p>
+    <div class="key">
+      <div><i class="m">der</i><small>masculine</small><span class="m">Tisch · Sommer · Kopf</span></div>
+      <div><i class="f">die</i><small>feminine</small><span class="f">Gabel · Freundin · Höhe</span></div>
+      <div><i class="n">das</i><small>neuter</small><span class="n">Messer · Mädchen · Bett</span></div>
+      <div><i class="p">die</i><small>plural</small><span class="p">Träume · Beine · Bücher</span></div>
+    </div>
+    <p class="unsure">A noun the app is not sure of gets no colour, only a <u>dashed underline</u>. A wrong colour would read as a confident answer, so it does not guess.</p>
+  </section>
+
+  <section class="wrap" aria-labelledby="h-read">
+    <span class="eyebrow">Read</span>
+    <h2 id="h-read">Your books, your scans, your films.</h2>
+    <p class="intro">Add a PDF or an EPUB from the phone and start reading while the rest is still being coloured. Photographed pages are read by OCR. Subtitles are coloured as the film plays.</p>
+    <div class="shots">
+      <figure><a href="media/import.jpg"><img src="media/import.jpg" width="1920" height="1080" loading="lazy" alt="The library on the phone, with the file picker open on a list of German books."></a><figcaption><b>Import</b> any PDF or EPUB, on the phone itself.</figcaption></figure>
+      <figure><a href="media/reading.jpg"><img src="media/reading.jpg" width="1920" height="1080" loading="lazy" alt="A page of Der kleine Prinz with its nouns in blue, pink, green and orange."></a><figcaption><b>Read at once.</b> Your page is coloured first.</figcaption></figure>
+      <figure><a href="media/scans.jpg"><img src="media/scans.jpg" width="1920" height="1080" loading="lazy" alt="A scanned page of Der Froschkönig with the printed nouns recoloured in the ink itself."></a><figcaption><b>Scans</b> are read by OCR and recoloured in the ink.</figcaption></figure>
+      <figure><a href="media/themes.jpg"><img src="media/themes.jpg" width="1920" height="1080" loading="lazy" alt="Kafka's Die Verwandlung in a dark reading theme, the theme picker open above it."></a><figcaption><b>Seven themes.</b> The colours keep their meaning on each.</figcaption></figure>
+      <figure><a href="media/subtitles.jpg"><img src="media/subtitles.jpg" width="1920" height="1080" loading="lazy" alt="A drawn film scene of a hut in a storm with a coloured German subtitle beneath it."></a><figcaption><b>Films.</b> German subtitles, coloured live.</figcaption></figure>
+      <figure><a href="media/subtitle-card.jpg"><img src="media/subtitle-card.jpg" width="1920" height="1080" loading="lazy" alt="The film paused with a dictionary card for der Zauberer open over it."></a><figcaption><b>Tap a subtitle word</b> and the film waits.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="h-know">
+    <span class="eyebrow">Understand</span>
+    <h2 id="h-know">It reads the sentence, not just the word.</h2>
+    <p class="intro">A German parser works through every sentence: its structure, each word's base form, the cases. That is how a verb split across a sentence is put back together, and how one spelling can come out in three colours.</p>
+    <div class="shots two">
+      <figure><a href="media/parser.jpg"><img src="media/parser.jpg" width="1920" height="1080" loading="lazy" alt="A parsed sentence with arcs between its words; ruft and an are joined into anrufen."></a><figcaption><b>The parser.</b> <i>ruft … an</i> becomes <i>anrufen</i>; <i>freut sich</i> becomes <i>sich freuen</i>.</figcaption></figure>
+      <figure><a href="media/three-genders.jpg"><img src="media/three-genders.jpg" width="1920" height="1080" loading="lazy" alt="Die Band, das Band, der Band: the same word in pink, green and blue."></a><figcaption><b>One word, three genders:</b> the band, the ribbon, the volume.</figcaption></figure>
+      <figure><a href="media/sentence.jpg"><img src="media/sentence.jpg" width="1920" height="1080" loading="lazy" alt="Das Messer in green and die Messer in orange, the articles underlined."></a><figcaption><b>One or many.</b> <i>das Messer</i> is a knife, <i>die Messer</i> are knives.</figcaption></figure>
+      <figure><a href="media/dictionary.jpg"><img src="media/dictionary.jpg" width="1920" height="1080" loading="lazy" alt="A dictionary card for der Apfelbaum, taken apart into Apfel and Baum."></a><figcaption><b>Tap any word.</b> Meaning, grammar, pronunciation; compounds taken apart.</figcaption></figure>
+      <figure><a href="media/split-verbs.jpg"><img src="media/split-verbs.jpg" width="1920" height="1080" loading="lazy" alt="A tap on fügte opens the card for hinzufügen."></a><figcaption><b>Split verbs.</b> A tap on <i>fügte</i> answers with <i>hinzufügen</i>.</figcaption></figure>
+      <figure><a href="media/translate.jpg"><img src="media/translate.jpg" width="1920" height="1080" loading="lazy" alt="A selected sentence from Kafka shown in German and in English in a translator panel."></a><figcaption><b>Select a sentence</b> to translate it, hear it, or ask an assistant.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="h-facts">
+    <span class="eyebrow">On your phone, and only there</span>
+    <h2 id="h-facts">No account. No internet needed. No guessing.</h2>
+    <div class="facts">
+      <div><h3>No account</h3><p>Nothing to sign up for. Your books stay on your phone.</p></div>
+      <div><h3>No internet needed</h3><p>The colouring, the OCR and the dictionary all work offline.</p></div>
+      <div><h3>No guessing</h3><p>Rules, a dictionary and a parser decide each colour. What they cannot decide is left uncoloured.</p></div>
+    </div>
+    <ul class="has">
+      <li>PDF</li><li>EPUB</li><li>Scanned pages</li><li>Film subtitles</li><li>Offline dictionary</li><li>Seven themes</li><li>Read aloud</li>
+    </ul>
+  </section>
+
+  <div class="wrap end">
+    <img src="media/chameleon.svg" alt="The ChamFlick chameleon, in the four gender colours." width="92" height="92">
+    <h2>Bald auf deinem <span class="n">Handy</span>.</h2>
+    <p>Coming soon for Android.</p>
+  </div>
+</main>
+
+<footer class="wrap">
+  <p>The pictures are frames from the preview video, which is drawn from the app's own colours and dictionary answers. The app is still in development and details may change.</p>
+  <p>Texts shown: Kafka, <i>Die Verwandlung</i> (1915) and the Brothers Grimm, <i>Der Froschkönig</i> (1857), both in the public domain; <i>Der kleine Prinz</i> in our own German. Dictionary entries come from Wiktionary, CC BY-SA.</p>
+  <p>© 2026 Ali Padash. All rights reserved. The source code is not public.</p>
+</footer>
+
+</body>
+</html>
