@@ -86,7 +86,6 @@ h1 span { display: block; }
 /* video */
 .film { margin-block: 12px 0; }
 .film video { width: 100%; aspect-ratio: 16 / 9; background: var(--navy2); border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 30px 80px rgba(0, 0, 0, .45); }
-.film p { margin: 12px 0 0; color: var(--faint); font-size: 14px; }
 
 /* sections */
 section { padding-block: 64px 0; }
@@ -105,38 +104,74 @@ figcaption b { color: var(--ink); font-weight: 600; }
 .sheet { background: var(--paper); color: var(--print); border-radius: 12px; padding: clamp(20px, 3.4vw, 40px); box-shadow: 0 30px 80px rgba(0, 0, 0, .45); font: 400 clamp(16px, 1.55vw, 19px)/1.75 var(--serif); }
 .sheet p { margin: 0; text-indent: 1.3em; }
 .sheet p:first-of-type { text-indent: 0; }
+.sheet .nb { white-space: nowrap; }
 .sheet-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(0, 0, 0, .1); font: 500 13px/1 var(--sans); color: #6B7080; }
 .switch { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; background: none; border: 0; padding: 4px; color: #3A3F52; font: 600 13px/1 var(--sans); }
 .switch i { width: 38px; height: 22px; border-radius: 999px; background: #C9CCD6; position: relative; transition: background .2s; }
 .switch i::after { content: ""; position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); }
 .switch[aria-pressed="true"] i { background: var(--pn); }
 .switch[aria-pressed="true"] i::after { transform: translateX(16px); }
-.nn, .vb { font: inherit; color: inherit; background: none; border: 0; padding: 0 1px; margin: 0 -1px; cursor: pointer; border-radius: 4px; transition: color .5s, background-color .2s; transition-delay: calc(var(--i, 0) * 45ms), 0s; }
+.sheet [data-w] { font: inherit; color: inherit; background: none; border: 0; padding: 0 1px; margin: 0 -1px; cursor: pointer; border-radius: 4px; transition: color .5s, background-color .2s; transition-delay: calc(var(--i, 0) * 70ms), 0s; }
 .sheet.on .nn.gm { color: var(--pm); } .sheet.on .nn.gf { color: var(--pf); } .sheet.on .nn.gn { color: var(--pn); } .sheet.on .nn.gp { color: var(--pp); }
-.nn:hover, .vb:hover { background: rgba(0, 0, 0, .07); }
-.nn.sel { background: rgba(31, 116, 216, .16); }
-.nn.gf.sel { background: rgba(219, 42, 140, .14); } .nn.gn.sel { background: rgba(14, 146, 87, .15); } .nn.gp.sel { background: rgba(217, 130, 0, .17); }
-.vb { text-decoration: underline dotted rgba(0, 0, 0, .28); text-underline-offset: 5px; }
-.vb.sel { background: rgba(27, 30, 43, .12); text-decoration-color: transparent; box-shadow: 0 0 0 2px rgba(27, 30, 43, .12); }
+.sheet [data-w]:hover { background: rgba(0, 0, 0, .07); }
+.sheet .sel { background: rgba(27, 30, 43, .11); }
+.sheet .nn.gm.sel { background: rgba(31, 116, 216, .16); } .sheet .nn.gf.sel { background: rgba(219, 42, 140, .14); }
+.sheet .nn.gn.sel { background: rgba(14, 146, 87, .15); } .sheet .nn.gp.sel { background: rgba(217, 130, 0, .17); }
 .side { position: sticky; top: 20px; display: grid; gap: 14px; }
-.card { background: var(--paper); color: var(--print); border-radius: 14px; padding: 22px 22px 18px; box-shadow: 0 30px 80px rgba(0, 0, 0, .45); min-height: 236px; }
-.card .head { font: 700 28px/1.2 var(--serif); letter-spacing: -.01em; }
-.card .head i { font-style: italic; }
-.card .pos { font: 600 10px/1 var(--sans); letter-spacing: .12em; color: #7A8090; border: 1px solid #D5D8E0; border-radius: 4px; padding: 3px 5px; vertical-align: middle; margin-left: 8px; }
-.card .gram { font: 400 13.5px/1.5 var(--sans); color: #6B7080; margin-top: 4px; }
-.card .mean { margin-top: 14px; padding: 10px 14px; border-left: 3px solid var(--pm); background: #EEF2F8; font: 500 16.5px/1.45 var(--sans); border-radius: 0 6px 6px 0; }
-.card .parts { margin: 14px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; font: 400 14.5px/1.4 var(--sans); }
-.card .parts dt { font: 700 15px/1.4 var(--serif); }
-.card .parts dd { margin: 0; color: #5A6072; }
-.card .note { margin: 14px 0 0; font: 400 13px/1.5 var(--sans); color: #7A8090; }
-.card.gm .head i, .card.gm .head b { color: var(--pm); } .card.gf .head i, .card.gf .head b { color: var(--pf); }
-.card.gn .head i, .card.gn .head b { color: var(--pn); } .card.gp .head i, .card.gp .head b { color: var(--pp); }
-.card.gf .mean { border-color: var(--pf); } .card.gn .mean { border-color: var(--pn); } .card.gp .mean { border-color: var(--pp); } .card.gv .mean { border-color: var(--print); }
+/* The card is the app's own, in its Day theme: the same parts in the same order, the first
+   meaning in a box of the entry's gender colour, each entry washed lightly in that colour. */
+.card { --c-ink: #1F2328; --c-soft: #4B5563; --c-faint: #8A919C; --c-rule: #E3E5E8;
+  background: #fff; color: var(--c-ink); border-radius: 18px; overflow: hidden; box-shadow: 0 30px 80px rgba(0, 0, 0, .45); font-family: var(--sans); min-height: 250px; }
+.c-note { font: italic 400 13px/1.3 var(--sans); color: var(--c-faint); padding: 14px 20px 0; }
+.c-entry { --g: #9AA1AC; --wash: rgba(0, 0, 0, .035); padding: 16px 20px 14px; }
+.c-entry + .c-entry { border-top: 1px solid var(--c-rule); }
+.c-entry.gm { --g: var(--pm); --wash: rgba(31, 116, 216, .08); background: rgba(31, 116, 216, .035); }
+.c-entry.gf { --g: var(--pf); --wash: rgba(219, 42, 140, .08); background: rgba(219, 42, 140, .03); }
+.c-entry.gn { --g: var(--pn); --wash: rgba(14, 146, 87, .09); background: rgba(14, 146, 87, .035); }
+.c-head { display: flex; align-items: flex-end; column-gap: 8px; row-gap: 2px; flex-wrap: wrap; }
+.c-word { font: 700 24px/1.15 var(--serif); }
+.c-word i { color: var(--g); }
+.c-entry.gm .c-word, .c-entry.gf .c-word, .c-entry.gn .c-word { color: var(--g); }   /* a noun's word in its colour too, as on the phone */
+.c-pos { font: 500 9.5px/1 var(--sans); letter-spacing: .06em; color: var(--c-faint); border: 1px solid var(--c-rule); border-radius: 20px; padding: 3px 7px 2px; margin-bottom: 5px; }
+.c-ipa { font: 400 13.5px/1 var(--sans); color: var(--c-faint); margin-bottom: 5px; }
+.c-say { cursor: pointer; background: none; border: 0; padding: 4px; margin: 0 0 -1px -4px; color: var(--c-faint); border-radius: 50%; display: inline-flex; }
+.c-say:hover, .c-say.on { color: var(--c-ink); }
+.c-say svg { width: 19px; height: 19px; overflow: visible; }
+.c-gram { font: 400 14.5px/1.4 var(--serif); color: var(--c-soft); margin-top: 6px; }
+.c-gram .lb { font: 400 12px/1 var(--sans); color: var(--c-faint); }
+.c-gram b { font-weight: 700; color: var(--c-ink); }
+.c-prim { margin-top: 11px; border-left: 3.5px solid var(--g); background: var(--wash); border-radius: 4px 9px 9px 4px; padding: 9px 12px; }
+.c-gloss { font: 500 16.5px/1.35 var(--sans); }
+.c-tag { font: 400 12px/1.2 var(--sans); color: var(--c-faint); margin-top: 2px; }
+.c-sense { display: flex; gap: 10px; margin-top: 8px; font: 400 14.5px/1.35 var(--sans); color: var(--c-soft); }
+.c-sense .k { color: var(--c-faint); min-width: 14px; }
+.c-sense .c-tag { display: inline; margin-left: 6px; }
+.c-more { font: 400 12.5px/1.3 var(--sans); color: var(--c-faint); margin-top: 8px; }
+.c-rule { height: 1px; background: var(--c-rule); margin: 12px 0 4px; }
+.c-part { display: flex; gap: 12px; margin-top: 7px; align-items: baseline; }
+.c-part b { font: 700 15px/1.2 var(--serif); min-width: 62px; }
+.c-part span { font: 400 13.5px/1.3 var(--sans); color: var(--c-soft); }
+.c-part span.de { font: italic 400 14px/1.3 var(--serif); }
+.c-link { display: inline-block; font: 400 13px/1 var(--sans); color: var(--c-faint); margin-top: 12px; text-decoration: none; }
+.c-link:hover { color: var(--c-ink); }
+.c-credit { font: 400 10.5px/1.35 var(--sans); color: var(--c-faint); padding: 9px 20px 13px; border-top: 1px solid var(--c-rule); }
 .card.swap { animation: rise .28s; }
 @keyframes rise { from { opacity: .3; transform: translateY(8px); } }
 .hint { margin: 0; color: var(--faint); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .hint button { cursor: pointer; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; font: 700 14px/1 var(--serif); color: var(--ink); }
 .hint button:hover { border-color: rgba(255, 255, 255, .4); }
+
+/* a picture, large, over the page it was on */
+#zoom { border: 0; padding: 0; background: none; max-width: none; max-height: none; width: 100vw; height: 100vh; margin: 0; overflow: hidden; }
+#zoom::backdrop { background: rgba(2, 6, 26, .92); }
+#zoom .in { width: 100%; height: 100%; display: grid; grid-template-rows: 1fr auto; place-items: center; gap: 12px; padding: 20px 16px 22px; cursor: zoom-out; }
+#zoom img { max-width: min(100%, 1600px); max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 10px; box-shadow: 0 30px 90px rgba(0, 0, 0, .6); min-height: 0; }
+#zoom p { margin: 0; color: var(--soft); font-size: 15px; text-align: center; max-width: 70ch; }
+#zoom p b { color: var(--ink); font-weight: 600; }
+#zoom button { position: fixed; cursor: pointer; background: rgba(255, 255, 255, .08); border: 1px solid var(--line); color: var(--ink); border-radius: 50%; width: 44px; height: 44px; font: 400 22px/1 var(--sans); display: grid; place-items: center; }
+#zoom button:hover { background: rgba(255, 255, 255, .18); }
+#zoom .x { top: 16px; right: 16px; } #zoom .prev { left: 16px; top: 50%; } #zoom .next { right: 16px; top: 50%; }
+figure a { cursor: zoom-in; }
 
 /* colour key */
 .key { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 0; border-top: 1px solid var(--line); }
@@ -183,7 +218,7 @@ footer p { margin: 0; max-width: 90ch; }
 @media (max-width: 520px) { .wrap { padding-inline: 16px; } section { padding-block: 48px 0; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  figure a, .nn, .vb, .q .w { transition: none; }
+  figure a, .sheet [data-w], .q .w { transition: none; }
   .chip.no, .q.done .w, .card.swap { animation: none; }
   .js .rv { opacity: 1; transform: none; transition: none; }
 }
@@ -221,40 +256,36 @@ footer p { margin: 0; max-width: 90ch; }
         <source src="media/chamflick-preview.mp4" type="video/mp4">
         <a href="media/chamflick-preview.mp4">Watch the two-minute preview (MP4, 12 MB)</a>
       </video>
-      <p>The two-minute preview, with sound: the music was written for it.</p>
     </div>
   </div>
 
   <section class="wrap rv" aria-labelledby="h-try">
     <span class="eyebrow">Try it here</span>
-    <h2 id="h-try">This is a page. Tap a word.</h2>
-    <p class="intro">Every noun takes the colour of its gender, and every word answers a tap. Try a long one, and try the verb that is cut in two.</p>
+    <h2 id="h-try">This is a page. Tap any word.</h2>
+    <p class="intro">Every noun takes the colour of its gender, and every word answers a tap, not only the nouns. The cards are the app's own answers, and the speaker says the word.</p>
     <div class="try">
       <div class="sheet on" id="sheet">
         <div class="sheet-top">
           <span>Der kleine Prinz · XXI</span>
           <button class="switch" id="switch" type="button" aria-pressed="true"><i></i>Colours</button>
         </div>
-        <p>Da erschien der <button class="nn gm" data-w="Fuchs">Fuchs</button>.</p>
-        <p>»Guten <button class="nn gm" data-w="Tag">Tag</button>«, sagte der <button class="nn gm" data-w="Fuchs">Fuchs</button>.</p>
-        <p>»Guten <button class="nn gm" data-w="Tag">Tag</button>«, antwortete höflich der kleine <button class="nn gm" data-w="Prinz">Prinz</button>, der sich umdrehte, aber nichts sah.</p>
-        <p>»Ich bin da«, sagte die <button class="nn gf" data-w="Stimme">Stimme</button>, »unter dem <button class="nn gm" data-w="Apfelbaum">Apfelbaum</button> …«</p>
-        <p>»Wer bist du?«, fragte der kleine <button class="nn gm" data-w="Prinz">Prinz</button>. »Du bist sehr hübsch …«</p>
-        <p>»Ich bin ein <button class="nn gm" data-w="Fuchs">Fuchs</button>«, sagte der <button class="nn gm" data-w="Fuchs">Fuchs</button>.</p>
-        <p>»Ich kann nicht mit dir spielen«, sagte der <button class="nn gm" data-w="Fuchs">Fuchs</button>. »Ich bin nicht gezähmt.«</p>
-        <p>»Ah, <button class="nn gf" data-w="Verzeihung">Verzeihung</button>!«, sagte der kleine <button class="nn gm" data-w="Prinz">Prinz</button>. Aber nach einigem <button class="nn gn" data-w="Nachdenken">Nachdenken</button> <button class="vb" data-w="hinzufügen">fügte</button> er <button class="vb" data-w="hinzufügen">hinzu</button>: »Was bedeutet ›zähmen‹?«</p>
-        <p>»Was suchst du?«, fragte der <button class="nn gm" data-w="Fuchs">Fuchs</button>. »Ich suche die <button class="nn gp" data-w="Menschen">Menschen</button>«, sagte der kleine <button class="nn gm" data-w="Prinz">Prinz</button>.</p>
+        <p>»<button data-w="Ich">Ich</button> <button data-w="bin">bin</button> <button data-w="da">da</button>«, <button data-w="sagte">sagte</button> <button data-w="die">die</button> <button class="nn gf" data-w="Stimme">Stimme</button>, »<button data-w="unter">unter</button> <button data-w="dem">dem</button> <button class="nn gm" data-w="Apfelbaum">Apfelbaum</button> …«</p>
+        <p>»<button data-w="Ah">Ah</button>, <button class="nn gf" data-w="Verzeihung">Verzeihung</button>!«, <button data-w="sagte">sagte</button> <button data-w="der">der</button> <button data-w="kleine">kleine</button> <button class="nn gm" data-w="Prinz">Prinz</button>. <button data-w="Aber">Aber</button> <button data-w="nach">nach</button> <button data-w="einigem">einigem</button> <button class="nn gn" data-w="Nachdenken">Nachdenken</button> <button class="vb" data-w="fügte">fügte</button> <button data-w="er">er</button> <button class="vb" data-w="fügte">hinzu</button>: »<button data-w="Was">Was</button> <button data-w="bedeutet">bedeutet</button> <span class="nb">›<button data-w="zähmen">zähmen</button>‹?«</span></p>
+        <p>»<button data-w="Ich">Ich</button> <button data-w="suche">suche</button> <button data-w="die">die</button> <button class="nn gp" data-w="Menschen">Menschen</button>«, <button data-w="sagte">sagte</button> <button data-w="der">der</button> <button data-w="kleine">kleine</button> <button class="nn gm" data-w="Prinz">Prinz</button>.</p>
       </div>
       <div class="side">
-        <div class="card gm" id="card" aria-live="polite">
-          <div class="head"><i>der</i> <b>Apfelbaum</b><span class="pos">NOUN</span></div>
-          <div class="gram">plural Apfelbäume · genitive Apfelbaumes or Apfelbaums</div>
-          <div class="mean">apple tree</div>
-          <dl class="parts"><dt>Apfel</dt><dd>apple (fruit)</dd><dt>Baum</dt><dd>tree</dd></dl>
-          <p class="note">A long word, taken apart.</p>
+        <div class="card" id="card" aria-live="polite">
+          <div class="c-entry gm">
+            <div class="c-head"><span class="c-word"><i>der</i> Apfelbaum</span><span class="c-pos">NOUN</span><span class="c-ipa">/ˈap͡fl̩ˌbaʊ̯m/</span></div>
+            <div class="c-gram"><span class="lb">plural</span> Apfelbäume · <span class="lb">genitive</span> Apfelbaumes or Apfelbaums · strong</div>
+            <div class="c-prim"><div class="c-gloss">apple tree</div></div>
+            <div class="c-rule"></div>
+            <div class="c-part"><b>Apfel</b><span>apple (fruit)</span></div>
+            <div class="c-part"><b>Baum</b><span>tree</span></div>
+          </div>
+          <div class="c-credit">English Wiktionary via kaikki.org (wiktextract) · German Wiktionary · CC BY-SA 4.0</div>
         </div>
-        <p class="hint" id="hint">Start with <button type="button" data-w="Apfelbaum">Apfelbaum</button> <button type="button" data-w="hinzufügen">fügte … hinzu</button> <button type="button" data-w="Menschen">Menschen</button></p>
-        <p class="hint">The cards here are shortened; the app's are fuller, and it says the word aloud.</p>
+        <p class="hint" id="hint">Try <button type="button" data-w="Apfelbaum">Apfelbaum</button> <button type="button" data-w="fügte">fügte … hinzu</button> <button type="button" data-w="Menschen">Menschen</button> <button type="button" data-w="bin">bin</button></p>
       </div>
     </div>
   </section>
@@ -339,10 +370,19 @@ footer p { margin: 0; max-width: 90ch; }
 
 <footer class="wrap">
   <p>The pictures are frames from the preview video and its earlier cuts, which are drawn from the app's own colours and dictionary answers. The app is still in development and details may change.</p>
-  <p>Texts shown: Kafka, <i>Die Verwandlung</i> (1915) and the Brothers Grimm, <i>Der Froschkönig</i> (1857), both in the public domain; <i>Der kleine Prinz</i> in our own German. Dictionary entries come from Wiktionary, CC BY-SA.</p>
+  <p>Texts shown: Kafka, <i>Die Verwandlung</i> (1915) and the Brothers Grimm, <i>Der Froschkönig</i> (1857), both in the public domain; the lines of <i>Der kleine Prinz</i> are our own translation into German, not a published one. Dictionary entries come from Wiktionary, CC BY-SA.</p>
   <p>The preview's music was written for it. Piano: Salamander Grand Piano by Alexander Holm, CC BY 3.0. Harp, marimba, glockenspiel and bass: VSCO 2 Community Edition, CC0.</p>
   <p>© 2026 Ali Padash Sotoodeh. All rights reserved. The source code is not public.</p>
 </footer>
+
+<dialog id="zoom" aria-label="Picture, enlarged">
+  <div class="in"><img alt=""><p></p></div>
+  <button type="button" class="x" aria-label="Close">×</button>
+  <button type="button" class="prev" aria-label="Previous picture">‹</button>
+  <button type="button" class="next" aria-label="Next picture">›</button>
+</dialog>
+
+<script src="cards.js"></script>
 
 <script>
 (() => {
@@ -406,44 +446,84 @@ footer p { margin: 0; max-width: 90ch; }
   }
   deal();
 
-  // ---- the page: a switch for the colours, a card for the word tapped
-  const WORDS = {
-    Fuchs: { g: "m", art: "der", pos: "NOUN", gram: "plural Füchse · genitive Fuchses", mean: "fox" },
-    Tag: { g: "m", art: "der", pos: "NOUN", gram: "plural Tage · genitive Tages or Tags", mean: "day", note: "Guten Tag: good day, hello." },
-    Prinz: { g: "m", art: "der", pos: "NOUN", gram: "plural Prinzen · genitive Prinzen", mean: "prince" },
-    Stimme: { g: "f", art: "die", pos: "NOUN", gram: "plural Stimmen", mean: "voice" },
-    Apfelbaum: { g: "m", art: "der", pos: "NOUN", gram: "plural Apfelbäume · genitive Apfelbaumes or Apfelbaums", mean: "apple tree",
-                 parts: [["Apfel", "apple (fruit)"], ["Baum", "tree"]], note: "A long word, taken apart." },
-    Verzeihung: { g: "f", art: "die", pos: "NOUN", gram: "genitive Verzeihung", mean: "pardon, forgiveness",
-                  parts: [["verzeihen", "to forgive"], ["-ung", "makes a noun of a verb"]], note: "Said alone: sorry!" },
-    Nachdenken: { g: "n", art: "das", pos: "NOUN", gram: "no plural", mean: "reflection, thinking it over",
-                  note: "The verb nachdenken, used as a noun. Verbs used as nouns are always neuter." },
-    Menschen: { g: "p", art: "die", pos: "NOUN · PLURAL", gram: "singular der Mensch", mean: "people, human beings",
-                note: "Orange is the plural, whatever the gender of the singular." },
-    "hinzufügen": { g: "v", art: "", pos: "VERB", gram: "past tense fügte hinzu · past participle hinzugefügt", mean: "to say (after saying something else), to add",
-                    parts: [["hinzu", "in addition, besides"], ["fügen", "to join"]], note: "One verb, split in two. Wherever the other half is, it finds it." },
-  };
+  // ---- the page: a switch for the colours, a card for the word tapped.
+  // The cards are in cards.js, made from what the app's dictionary answers.
+  const CARDS = window.CARDS || {};
   const sheet = $("sheet"), card = $("card");
   const el = (tag, cls, text) => { const x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; };
+  const SPEAKER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke="none"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>';
+  const voice = new Audio();
+  function say(name, button) {
+    voice.src = "media/say/" + name + ".mp3";
+    button.classList.add("on");
+    voice.onended = voice.onerror = () => button.classList.remove("on");
+    voice.play().catch(() => button.classList.remove("on"));
+  }
+  function entryOf(e) {
+    const box = el("div", "c-entry" + (e.g ? " g" + e.g : ""));
+    const head = el("div", "c-head"), word = el("span", "c-word");
+    if (e.art) word.append(el("i", "", e.art), " ");
+    word.append(e.w);
+    head.append(word, el("span", "c-pos", e.pos));
+    if (e.ipa) head.append(el("span", "c-ipa", e.ipa));
+    if (e.say) {
+      const b = el("button", "c-say");
+      b.type = "button"; b.innerHTML = SPEAKER; b.setAttribute("aria-label", "Hear " + (e.art ? e.art + " " : "") + e.w);
+      b.onclick = () => say(e.say, b);
+      head.append(b);
+    }
+    box.append(head);
+    if (e.gram.length) {
+      const gram = el("div", "c-gram");
+      e.gram.forEach(([label, value, tapped], i) => {
+        if (i) gram.append(" · ");
+        if (label) gram.append(el("span", "lb", label), " ");
+        gram.append(tapped ? el("b", "", value) : value);   // the form that was tapped is the bold one
+      });
+      box.append(gram);
+    }
+    e.senses.forEach(([gloss, tags], i) => {
+      if (i === 0) {
+        const prim = el("div", "c-prim");
+        prim.append(el("div", "c-gloss", gloss));
+        if (tags) prim.append(el("div", "c-tag", tags));
+        box.append(prim);
+      } else {
+        const row = el("div", "c-sense"), text = el("span", "", gloss);
+        if (tags) text.append(el("span", "c-tag", tags));
+        row.append(el("span", "k", (i + 1) + "."), text);
+        box.append(row);
+      }
+    });
+    if (e.more) box.append(el("div", "c-more", e.more + " more " + (e.more === 1 ? "meaning" : "meanings") + " in the app"));
+    if (e.parts.length) {
+      box.append(el("div", "c-rule"));
+      for (const [text, gloss, german] of e.parts) {
+        const row = el("div", "c-part");
+        row.append(el("b", "", text), el("span", german ? "de" : "", gloss));
+        box.append(row);
+      }
+    }
+    if (e.url) {
+      const a = el("a", "c-link", "Full entry on Wiktionary →");
+      a.href = e.url; a.target = "_blank"; a.rel = "noopener";
+      box.append(a);
+    }
+    return box;
+  }
   function show(word, tapped) {
-    const d = WORDS[word];
+    const d = CARDS[word];
     if (!d) return;
-    // a noun: the one tapped (or its first on the page); the verb: both its halves
+    // one word is marked: the one tapped (or its first on the page); a verb in two halves, both
     const all = [...sheet.querySelectorAll("[data-w]")].filter(x => x.dataset.w === word);
     sheet.querySelectorAll(".sel").forEach(x => x.classList.remove("sel"));
-    (d.g === "v" ? all : [tapped || all[0]]).forEach(x => x.classList.add("sel"));
-    card.className = "card g" + d.g;
+    (all.some(x => x.classList.contains("vb")) ? all : [tapped || all[0]]).forEach(x => x.classList.add("sel"));
+    card.className = "card";
     card.textContent = "";
-    const head = el("div", "head");
-    if (d.art) head.append(el("i", "", d.art), " ");
-    head.append(el("b", "", word), el("span", "pos", d.pos));
-    card.append(head, el("div", "gram", d.gram), el("div", "mean", d.mean));
-    if (d.parts) {
-      const dl = el("dl", "parts");
-      for (const [a, b] of d.parts) dl.append(el("dt", "", a), el("dd", "", b));
-      card.append(dl);
-    }
-    if (d.note) card.append(el("p", "note", d.note));
+    if (d.note) card.append(el("div", "c-note", d.note));
+    d.entries.forEach(e => card.append(entryOf(e)));
+    card.append(el("div", "c-credit", (d.left ? d.left + " more " + (d.left === 1 ? "entry" : "entries") + " in the app · " : "")
+      + "English Wiktionary via kaikki.org (wiktextract) · German Wiktionary · CC BY-SA 4.0"));
     void card.offsetWidth;                      // so that the same animation runs again
     card.classList.add("swap");
   }
@@ -466,6 +546,26 @@ footer p { margin: 0; max-width: 90ch; }
     }, { threshold: 0.45 }).observe(sheet);
   }
   show("Apfelbaum");
+
+  // ---- a picture is enlarged where it is, not opened as a page of its own
+  const zoom = $("zoom"), shots = [...document.querySelectorAll("figure a")];
+  let shown = 0;
+  function enlarge(i) {
+    shown = (i + shots.length) % shots.length;
+    const a = shots[shown], img = a.querySelector("img");
+    zoom.querySelector("img").src = a.href;
+    zoom.querySelector("img").alt = img.alt;
+    zoom.querySelector("p").innerHTML = a.parentNode.querySelector("figcaption").innerHTML;
+    if (!zoom.open) zoom.showModal();
+  }
+  if (zoom.showModal) {
+    shots.forEach((a, i) => a.addEventListener("click", e => { e.preventDefault(); enlarge(i); }));
+    zoom.querySelector(".in").onclick = () => zoom.close();
+    zoom.querySelector(".x").onclick = () => zoom.close();
+    zoom.querySelector(".prev").onclick = () => enlarge(shown - 1);
+    zoom.querySelector(".next").onclick = () => enlarge(shown + 1);
+    zoom.addEventListener("keydown", e => { if (e.key === "ArrowLeft") enlarge(shown - 1); if (e.key === "ArrowRight") enlarge(shown + 1); });
+  }
 
   // ---- one word, three genders: the sentence changes, the word stays
   const BAND = [

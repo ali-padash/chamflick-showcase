@@ -67,8 +67,9 @@ answers. On the page itself there is a sample to tap: guess three genders,
 switch a page's colours on, open a word's card.
 
 Texts shown: Kafka, *Die Verwandlung* (1915) and the Brothers Grimm, *Der
-Froschkönig* (1857), both in the public domain; *Der kleine Prinz* in our own
-German. Dictionary entries come from Wiktionary, CC BY-SA.
+Froschkönig* (1857), both in the public domain; the lines of *Der kleine
+Prinz* are our own translation into German, not a published one. Dictionary
+entries come from Wiktionary, CC BY-SA.
 
 The preview's music was written for it. Piano: Salamander Grand Piano by
 Alexander Holm, CC BY 3.0. Harp, marimba, glockenspiel and bass: VSCO 2
