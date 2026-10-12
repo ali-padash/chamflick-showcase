@@ -5,8 +5,8 @@
 <h1 align="center">ChamFlick DE</h1>
 
 <p align="center">
-  <b>See the gender. Remember the word.</b><br>
-  Every German noun in its colour, in books, scans and films.<br>
+  <b>Gender at a glance. Meaning at a tap.</b><br>
+  Every German noun in its colour, in books, scanned books and films.<br>
   Coming soon for Android.
 </p>
 
@@ -14,7 +14,7 @@
   <a href="https://ali-padash.github.io/chamflick-showcase/">
     <img src="media/brand.jpg" width="820" alt="ChamFlick DE: watch the two-minute preview">
   </a><br>
-  <a href="https://ali-padash.github.io/chamflick-showcase/"><b>Watch the two-minute preview</b></a>
+  <a href="https://ali-padash.github.io/chamflick-showcase/"><b>Watch the two-minute preview, and try a page yourself</b></a>
 </p>
 
 ## What it does
@@ -39,7 +39,7 @@ not guess.
 | ![Importing a book on the phone](media/import.jpg) | ![A page read in colour](media/reading.jpg) |
 | **Import** any PDF or EPUB, on the phone itself. | **Read at once.** Your page is coloured first. |
 | ![A scanned page recoloured](media/scans.jpg) | ![A dark reading theme](media/themes.jpg) |
-| **Scans** are read by OCR and recoloured in the ink. | **Seven themes.** The colours keep their meaning. |
+| **Scanned books** are read by OCR and recoloured in the ink. | **Seven themes.** The colours keep their meaning. |
 | ![Coloured film subtitles](media/subtitles.jpg) | ![A dictionary card over a paused film](media/subtitle-card.jpg) |
 | **Films.** German subtitles, coloured live. | **Tap a subtitle word** and the film waits. |
 
@@ -61,11 +61,17 @@ not guess.
 ## About this repository
 
 This is the showcase only. The app is still in development and its source
-code is not public. The pictures are frames from the preview video, which is
-drawn from the app's own colours and dictionary answers.
+code is not public. The pictures are frames from the preview video and its
+earlier cuts, which are drawn from the app's own colours and dictionary
+answers. On the page itself there is a sample to tap: guess three genders,
+switch a page's colours on, open a word's card.
 
 Texts shown: Kafka, *Die Verwandlung* (1915) and the Brothers Grimm, *Der
 Froschkönig* (1857), both in the public domain; *Der kleine Prinz* in our own
 German. Dictionary entries come from Wiktionary, CC BY-SA.
 
-© 2026 Ali Padash. All rights reserved.
+The preview's music was written for it. Piano: Salamander Grand Piano by
+Alexander Holm, CC BY 3.0. Harp, marimba, glockenspiel and bass: VSCO 2
+Community Edition, CC0.
+
+© 2026 Ali Padash Sotoodeh. All rights reserved.

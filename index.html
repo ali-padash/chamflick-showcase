@@ -4,25 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ChamFlick DE</title>
-<meta name="description" content="Every German noun in its colour, in books, scans and films. An Android reading app, coming soon.">
+<meta name="description" content="Every German noun in its colour, in books, scanned books and films. An Android reading app, coming soon.">
 <meta property="og:title" content="ChamFlick DE">
-<meta property="og:description" content="See the gender. Remember the word. Every German noun in its colour, in books, scans and films.">
+<meta property="og:description" content="Gender at a glance. Meaning at a tap. Every German noun in its colour, in books, scanned books and films.">
 <meta property="og:image" content="media/brand.jpg">
 <meta name="theme-color" content="#051445">
 <link rel="icon" type="image/svg+xml" href="media/chameleon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Serif:ital,wght@0,400;0,700;1,700&display=swap">
+<script>document.documentElement.classList.add("js");</script>
 <style>
 /* One dark stage, the preview video's own: navy ground, serif for German and
    headlines, sans for everything said about them, and four colours that only
-   ever mean a gender. */
+   ever mean a gender. The page of a book is the one light thing on it. */
 :root {
   color-scheme: dark;
   --navy0: #0C2466; --navy1: #051445; --navy2: #030B2E;
   --m: #4A9BFF; --f: #FF4FA8; --n: #22C07A; --p: #FFB020;
   --ink: #F3F5FB; --soft: #B4BEDA; --faint: #7F8BB0;
   --line: rgba(255, 255, 255, .12); --panel: rgba(255, 255, 255, .045);
+  /* the same four on paper, where they must be darker to be read */
+  --paper: #FBFAF6; --print: #1B1E2B; --pm: #1F74D8; --pf: #DB2A8C; --pn: #0E9257; --pp: #D98200;
   --serif: "Noto Serif", Georgia, "Times New Roman", serif;
   --sans: "Noto Sans", "Segoe UI", Roboto, Arial, sans-serif;
   --wide: 1120px;
@@ -37,7 +40,8 @@ body {
 }
 img, video { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
-a:focus-visible, summary:focus-visible { outline: 2px solid var(--m); outline-offset: 3px; border-radius: 4px; }
+button { font: inherit; color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--m); outline-offset: 3px; border-radius: 4px; }
 .wrap { max-width: var(--wide); margin: 0 auto; padding-inline: 24px; }
 .m { color: var(--m); } .f { color: var(--f); } .n { color: var(--n); } .p { color: var(--p); }
 
@@ -53,13 +57,31 @@ a:focus-visible, summary:focus-visible { outline: 2px solid var(--m); outline-of
 /* hero */
 .hero { padding-block: 40px 28px; display: grid; gap: 28px; }
 .eyebrow { font: 600 12px/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--n); }
-h1 { font: 700 clamp(38px, 6.4vw, 76px)/1.04 var(--serif); letter-spacing: -.02em; margin: 0; text-wrap: balance; max-width: 15ch; }
+h1 { font: 700 clamp(34px, 6.4vw, 76px)/1.04 var(--serif); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+h1 span { display: block; }
 .lede { font-size: clamp(17px, 1.6vw, 20px); color: var(--soft); max-width: 56ch; margin: 0; }
-.table { display: flex; flex-wrap: wrap; gap: 14px 44px; align-items: flex-end; }
-.table div { display: grid; gap: 2px; }
-.table i { font: italic 700 20px/1.2 var(--serif); }
-.table b { font: 700 clamp(30px, 4.4vw, 50px)/1.1 var(--serif); }
-.table p { margin: 0; flex-basis: 100%; color: var(--faint); font-size: 15px; }
+
+/* the guessing game: three words, an article to pick for each */
+.guess { border-top: 1px solid var(--line); padding-top: 26px; display: grid; gap: 20px; }
+.guess-ask { margin: 0; font: 600 13px/1.4 var(--sans); letter-spacing: .06em; color: var(--soft); }
+.guess-ask b { color: var(--ink); font-weight: 600; }
+.words { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 26px 36px; }
+.q { display: grid; gap: 4px; min-width: 0; }
+.q .art { font: italic 700 20px/1 var(--serif); min-height: 34px; display: flex; gap: 6px; align-items: center; }
+.q .w { font: 700 clamp(34px, 4.6vw, 54px)/1.1 var(--serif); color: var(--faint); transition: color .45s; }
+.q .en { font-size: 14px; color: var(--faint); letter-spacing: .04em; visibility: hidden; }
+.q.done .en { visibility: visible; }
+.chip { cursor: pointer; font: italic 700 17px/1 var(--serif); padding: 8px 12px 9px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); color: var(--soft); transition: border-color .15s, color .15s, opacity .2s; }
+.chip:hover { border-color: rgba(255, 255, 255, .4); color: var(--ink); }
+.chip.no { opacity: .28; pointer-events: none; text-decoration: line-through; animation: shake .3s; }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@keyframes land { 0% { transform: scale(.92); } 60% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.q.done .w { animation: land .4s; transform-origin: left center; }
+.q.done.gm .w, .q.done.gm .art { color: var(--m); } .q.done.gf .w, .q.done.gf .art { color: var(--f); } .q.done.gn .w, .q.done.gn .art { color: var(--n); }
+.verdict { margin: 0; min-height: 3.2em; color: var(--soft); display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; }
+.verdict strong { color: var(--ink); font: 700 19px/1.3 var(--serif); }
+.again { cursor: pointer; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; font: 500 13px/1 var(--sans); letter-spacing: .03em; color: var(--soft); }
+.again:hover { border-color: rgba(255, 255, 255, .4); color: var(--ink); }
 
 /* video */
 .film { margin-block: 12px 0; }
@@ -78,6 +100,44 @@ figure a:hover { border-color: rgba(255, 255, 255, .34); transform: translateY(-
 figcaption { margin-top: 10px; font-size: 14.5px; color: var(--soft); }
 figcaption b { color: var(--ink); font-weight: 600; }
 
+/* the page you can tap: paper, a switch for the colours, a card for the word */
+.try { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.sheet { background: var(--paper); color: var(--print); border-radius: 12px; padding: clamp(20px, 3.4vw, 40px); box-shadow: 0 30px 80px rgba(0, 0, 0, .45); font: 400 clamp(16px, 1.55vw, 19px)/1.75 var(--serif); }
+.sheet p { margin: 0; text-indent: 1.3em; }
+.sheet p:first-of-type { text-indent: 0; }
+.sheet-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(0, 0, 0, .1); font: 500 13px/1 var(--sans); color: #6B7080; }
+.switch { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; background: none; border: 0; padding: 4px; color: #3A3F52; font: 600 13px/1 var(--sans); }
+.switch i { width: 38px; height: 22px; border-radius: 999px; background: #C9CCD6; position: relative; transition: background .2s; }
+.switch i::after { content: ""; position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); }
+.switch[aria-pressed="true"] i { background: var(--pn); }
+.switch[aria-pressed="true"] i::after { transform: translateX(16px); }
+.nn, .vb { font: inherit; color: inherit; background: none; border: 0; padding: 0 1px; margin: 0 -1px; cursor: pointer; border-radius: 4px; transition: color .5s, background-color .2s; transition-delay: calc(var(--i, 0) * 45ms), 0s; }
+.sheet.on .nn.gm { color: var(--pm); } .sheet.on .nn.gf { color: var(--pf); } .sheet.on .nn.gn { color: var(--pn); } .sheet.on .nn.gp { color: var(--pp); }
+.nn:hover, .vb:hover { background: rgba(0, 0, 0, .07); }
+.nn.sel { background: rgba(31, 116, 216, .16); }
+.nn.gf.sel { background: rgba(219, 42, 140, .14); } .nn.gn.sel { background: rgba(14, 146, 87, .15); } .nn.gp.sel { background: rgba(217, 130, 0, .17); }
+.vb { text-decoration: underline dotted rgba(0, 0, 0, .28); text-underline-offset: 5px; }
+.vb.sel { background: rgba(27, 30, 43, .12); text-decoration-color: transparent; box-shadow: 0 0 0 2px rgba(27, 30, 43, .12); }
+.side { position: sticky; top: 20px; display: grid; gap: 14px; }
+.card { background: var(--paper); color: var(--print); border-radius: 14px; padding: 22px 22px 18px; box-shadow: 0 30px 80px rgba(0, 0, 0, .45); min-height: 236px; }
+.card .head { font: 700 28px/1.2 var(--serif); letter-spacing: -.01em; }
+.card .head i { font-style: italic; }
+.card .pos { font: 600 10px/1 var(--sans); letter-spacing: .12em; color: #7A8090; border: 1px solid #D5D8E0; border-radius: 4px; padding: 3px 5px; vertical-align: middle; margin-left: 8px; }
+.card .gram { font: 400 13.5px/1.5 var(--sans); color: #6B7080; margin-top: 4px; }
+.card .mean { margin-top: 14px; padding: 10px 14px; border-left: 3px solid var(--pm); background: #EEF2F8; font: 500 16.5px/1.45 var(--sans); border-radius: 0 6px 6px 0; }
+.card .parts { margin: 14px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; font: 400 14.5px/1.4 var(--sans); }
+.card .parts dt { font: 700 15px/1.4 var(--serif); }
+.card .parts dd { margin: 0; color: #5A6072; }
+.card .note { margin: 14px 0 0; font: 400 13px/1.5 var(--sans); color: #7A8090; }
+.card.gm .head i, .card.gm .head b { color: var(--pm); } .card.gf .head i, .card.gf .head b { color: var(--pf); }
+.card.gn .head i, .card.gn .head b { color: var(--pn); } .card.gp .head i, .card.gp .head b { color: var(--pp); }
+.card.gf .mean { border-color: var(--pf); } .card.gn .mean { border-color: var(--pn); } .card.gp .mean { border-color: var(--pp); } .card.gv .mean { border-color: var(--print); }
+.card.swap { animation: rise .28s; }
+@keyframes rise { from { opacity: .3; transform: translateY(8px); } }
+.hint { margin: 0; color: var(--faint); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.hint button { cursor: pointer; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; font: 700 14px/1 var(--serif); color: var(--ink); }
+.hint button:hover { border-color: rgba(255, 255, 255, .4); }
+
 /* colour key */
 .key { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 0; border-top: 1px solid var(--line); }
 .key div { padding: 22px 20px 22px 0; border-bottom: 1px solid var(--line); }
@@ -87,9 +147,21 @@ figcaption b { color: var(--ink); font-weight: 600; }
 .unsure { margin: 22px 0 0; color: var(--soft); max-width: 62ch; }
 .unsure u { text-decoration: underline dashed var(--faint); text-underline-offset: 5px; font-family: var(--serif); color: var(--ink); }
 
+/* one word, three genders */
+.band { display: grid; gap: 22px; justify-items: center; text-align: center; padding: clamp(28px, 5vw, 56px) 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+.band svg { width: 76px; height: 76px; }
+.band .line { margin: 0; font: 400 clamp(28px, 5.2vw, 60px)/1.15 var(--serif); letter-spacing: -.01em; min-height: 1.2em; }
+.band .line i, .band .line b { transition: color .35s; font-style: normal; }
+.band .en { margin: 0; color: var(--soft); font-size: 18px; min-height: 1.6em; }
+.band .pick { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.band .pick button { cursor: pointer; font: italic 700 17px/1 var(--serif); padding: 9px 14px 10px; border-radius: 999px; background: none; border: 1px solid var(--line); color: var(--soft); }
+.band .pick button[aria-pressed="true"] { color: var(--navy2); border-color: transparent; }
+.band .pick button.gf[aria-pressed="true"] { background: var(--f); } .band .pick button.gn[aria-pressed="true"] { background: var(--n); } .band .pick button.gm[aria-pressed="true"] { background: var(--m); }
+.band .moral { margin: 0; color: var(--faint); font-size: 14.5px; }
+
 /* promises */
-.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 28px 40px; }
-.facts h3 { font: 700 21px/1.25 var(--serif); margin: 0 0 6px; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 28px 40px; margin-top: 22px; }
+.facts h3 { font: 700 27px/1.2 var(--serif); letter-spacing: -.01em; margin: 0 0 8px; }
 .facts p { margin: 0; color: var(--soft); font-size: 15.5px; }
 .has { margin: 36px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 10px; }
 .has li { font: 500 13px/1 var(--sans); letter-spacing: .03em; padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px; color: var(--soft); background: var(--panel); }
@@ -99,11 +171,22 @@ figcaption b { color: var(--ink); font-weight: 600; }
 .end img { width: 92px; height: 92px; border-radius: 22px; }
 .end h2 { margin: 6px 0 0; font-size: clamp(30px, 4.6vw, 52px); }
 .end p { margin: 0; color: var(--soft); }
+.end .slogan { font: 700 clamp(18px, 2.2vw, 24px)/1.3 var(--serif); color: var(--ink); }
 footer { border-top: 1px solid var(--line); margin-top: 40px; padding-block: 26px 44px; color: var(--faint); font-size: 13.5px; display: grid; gap: 6px; }
 footer p { margin: 0; max-width: 90ch; }
 
+/* things come up as they are scrolled to; only where scripts run, so that nothing stays hidden without them */
+.js .rv { opacity: 0; transform: translateY(18px); transition: opacity .6s, transform .6s; }
+.js .rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 860px) { .try { grid-template-columns: minmax(0, 1fr); } .side { position: static; } }
 @media (max-width: 520px) { .wrap { padding-inline: 16px; } section { padding-block: 48px 0; } }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } figure a { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  figure a, .nn, .vb, .q .w { transition: none; }
+  .chip.no, .q.done .w, .card.swap { animation: none; }
+  .js .rv { opacity: 1; transform: none; transition: none; }
+}
 </style>
 </head>
 <body>
@@ -119,25 +202,64 @@ footer p { margin: 0; max-width: 90ch; }
 <main id="top">
   <div class="wrap hero">
     <span class="eyebrow">German reading, in colour</span>
-    <h1>See the gender. Remember the word.</h1>
-    <p class="lede">ChamFlick DE colours every German noun by its gender while you read: in your own books, in scanned pages and in film subtitles. Tap any word for its meaning. It all runs on the phone.</p>
-    <div class="table" aria-label="der Löffel, die Gabel, das Messer">
-      <div><i class="m">der</i><b class="m">Löffel</b></div>
-      <div><i class="f">die</i><b class="f">Gabel</b></div>
-      <div><i class="n">das</i><b class="n">Messer</b></div>
-      <p>Spoon, fork, knife. Same table, three genders.</p>
+    <h1><span>Gender at a glance.</span> <span>Meaning at a tap.</span></h1>
+    <p class="lede">ChamFlick DE colours every German noun by its gender while you read: in your own books, in scanned books and in film subtitles. Tap any word for its meaning. It all runs on the phone.</p>
+
+    <!-- Without scripts this is the plain answer; with them it becomes the game below. -->
+    <div class="guess" id="guess">
+      <p class="guess-ask" id="guess-ask"><b>Spoon, fork, knife.</b> Three words, three genders.</p>
+      <div class="words" id="guess-words">
+        <div class="q done gm"><span class="art">der</span><b class="w">Löffel</b><span class="en">spoon</span></div>
+        <div class="q done gf"><span class="art">die</span><b class="w">Gabel</b><span class="en">fork</span></div>
+        <div class="q done gn"><span class="art">das</span><b class="w">Messer</b><span class="en">knife</span></div>
+      </div>
+      <p class="verdict" id="guess-verdict" aria-live="polite"><strong>No more guessing.</strong></p>
     </div>
 
     <div class="film">
-      <video id="preview" controls preload="none" playsinline poster="media/brand.jpg" width="1920" height="1080">
+      <video id="preview" controls preload="metadata" playsinline poster="media/brand.jpg" width="1920" height="1080">
         <source src="media/chamflick-preview.mp4" type="video/mp4">
-        <a href="media/chamflick-preview.mp4">Watch the two-minute preview (MP4, 9 MB)</a>
+        <a href="media/chamflick-preview.mp4">Watch the two-minute preview (MP4, 12 MB)</a>
       </video>
-      <p>The two-minute preview. It has no sound yet; the music is still being written.</p>
+      <p>The two-minute preview, with sound: the music was written for it.</p>
     </div>
   </div>
 
-  <section class="wrap" aria-labelledby="h-key">
+  <section class="wrap rv" aria-labelledby="h-try">
+    <span class="eyebrow">Try it here</span>
+    <h2 id="h-try">This is a page. Tap a word.</h2>
+    <p class="intro">Every noun takes the colour of its gender, and every word answers a tap. Try a long one, and try the verb that is cut in two.</p>
+    <div class="try">
+      <div class="sheet on" id="sheet">
+        <div class="sheet-top">
+          <span>Der kleine Prinz · XXI</span>
+          <button class="switch" id="switch" type="button" aria-pressed="true"><i></i>Colours</button>
+        </div>
+        <p>Da erschien der <button class="nn gm" data-w="Fuchs">Fuchs</button>.</p>
+        <p>»Guten <button class="nn gm" data-w="Tag">Tag</button>«, sagte der <button class="nn gm" data-w="Fuchs">Fuchs</button>.</p>
+        <p>»Guten <button class="nn gm" data-w="Tag">Tag</button>«, antwortete höflich der kleine <button class="nn gm" data-w="Prinz">Prinz</button>, der sich umdrehte, aber nichts sah.</p>
+        <p>»Ich bin da«, sagte die <button class="nn gf" data-w="Stimme">Stimme</button>, »unter dem <button class="nn gm" data-w="Apfelbaum">Apfelbaum</button> …«</p>
+        <p>»Wer bist du?«, fragte der kleine <button class="nn gm" data-w="Prinz">Prinz</button>. »Du bist sehr hübsch …«</p>
+        <p>»Ich bin ein <button class="nn gm" data-w="Fuchs">Fuchs</button>«, sagte der <button class="nn gm" data-w="Fuchs">Fuchs</button>.</p>
+        <p>»Ich kann nicht mit dir spielen«, sagte der <button class="nn gm" data-w="Fuchs">Fuchs</button>. »Ich bin nicht gezähmt.«</p>
+        <p>»Ah, <button class="nn gf" data-w="Verzeihung">Verzeihung</button>!«, sagte der kleine <button class="nn gm" data-w="Prinz">Prinz</button>. Aber nach einigem <button class="nn gn" data-w="Nachdenken">Nachdenken</button> <button class="vb" data-w="hinzufügen">fügte</button> er <button class="vb" data-w="hinzufügen">hinzu</button>: »Was bedeutet ›zähmen‹?«</p>
+        <p>»Was suchst du?«, fragte der <button class="nn gm" data-w="Fuchs">Fuchs</button>. »Ich suche die <button class="nn gp" data-w="Menschen">Menschen</button>«, sagte der kleine <button class="nn gm" data-w="Prinz">Prinz</button>.</p>
+      </div>
+      <div class="side">
+        <div class="card gm" id="card" aria-live="polite">
+          <div class="head"><i>der</i> <b>Apfelbaum</b><span class="pos">NOUN</span></div>
+          <div class="gram">plural Apfelbäume · genitive Apfelbaumes or Apfelbaums</div>
+          <div class="mean">apple tree</div>
+          <dl class="parts"><dt>Apfel</dt><dd>apple (fruit)</dd><dt>Baum</dt><dd>tree</dd></dl>
+          <p class="note">A long word, taken apart.</p>
+        </div>
+        <p class="hint" id="hint">Start with <button type="button" data-w="Apfelbaum">Apfelbaum</button> <button type="button" data-w="hinzufügen">fügte … hinzu</button> <button type="button" data-w="Menschen">Menschen</button></p>
+        <p class="hint">The cards here are shortened; the app's are fuller, and it says the word aloud.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap rv" aria-labelledby="h-key">
     <span class="eyebrow">The colour key</span>
     <h2 id="h-key">Four colours. Each one only ever means a gender.</h2>
     <p class="intro">After a few pages the colour arrives before the article does. That is the point: you stop looking genders up and start remembering them.</p>
@@ -150,59 +272,225 @@ footer p { margin: 0; max-width: 90ch; }
     <p class="unsure">A noun the app is not sure of gets no colour, only a <u>dashed underline</u>. A wrong colour would read as a confident answer, so it does not guess.</p>
   </section>
 
-  <section class="wrap" aria-labelledby="h-read">
+  <section class="wrap rv" aria-labelledby="h-band">
+    <span class="eyebrow">Same word. Three genders.</span>
+    <h2 id="h-band">It reads the sentence, not just the word.</h2>
+    <p class="intro">Some words change their meaning with their gender. A list of nouns cannot tell which one is meant; the sentence can.</p>
+    <div class="band" id="band">
+      <svg id="band-icon" viewBox="0 0 120 120" aria-hidden="true"></svg>
+      <p class="line" id="band-line"><i class="f">Die</i> <b class="f">Band</b> spielt laut.</p>
+      <p class="en" id="band-en" aria-live="polite">the band</p>
+      <div class="pick" role="group" aria-label="Which Band">
+        <button type="button" class="gf" aria-pressed="true">die Band</button>
+        <button type="button" class="gn" aria-pressed="false">das Band</button>
+        <button type="button" class="gm" aria-pressed="false">der Band</button>
+      </div>
+      <p class="moral">The sentence tells it which one.</p>
+    </div>
+  </section>
+
+  <section class="wrap rv" aria-labelledby="h-read">
     <span class="eyebrow">Read</span>
-    <h2 id="h-read">Your books, your scans, your films.</h2>
-    <p class="intro">Add a PDF or an EPUB from the phone and start reading while the rest is still being coloured. Photographed pages are read by OCR. Subtitles are coloured as the film plays.</p>
+    <h2 id="h-read">Your books, your scanned books, your films.</h2>
+    <p class="intro">Add a PDF or an EPUB from the phone and start reading while the rest is still being coloured. Scanned books are read by OCR. Subtitles are coloured as the film plays.</p>
     <div class="shots">
       <figure><a href="media/import.jpg"><img src="media/import.jpg" width="1920" height="1080" loading="lazy" alt="The library on the phone, with the file picker open on a list of German books."></a><figcaption><b>Import</b> any PDF or EPUB, on the phone itself.</figcaption></figure>
       <figure><a href="media/reading.jpg"><img src="media/reading.jpg" width="1920" height="1080" loading="lazy" alt="A page of Der kleine Prinz with its nouns in blue, pink, green and orange."></a><figcaption><b>Read at once.</b> Your page is coloured first.</figcaption></figure>
-      <figure><a href="media/scans.jpg"><img src="media/scans.jpg" width="1920" height="1080" loading="lazy" alt="A scanned page of Der Froschkönig with the printed nouns recoloured in the ink itself."></a><figcaption><b>Scans</b> are read by OCR and recoloured in the ink.</figcaption></figure>
+      <figure><a href="media/scans.jpg"><img src="media/scans.jpg" width="1920" height="1080" loading="lazy" alt="A scanned page of Der Froschkönig with the printed nouns recoloured in the ink itself."></a><figcaption><b>Scanned books</b> are read by OCR and recoloured in the ink.</figcaption></figure>
       <figure><a href="media/themes.jpg"><img src="media/themes.jpg" width="1920" height="1080" loading="lazy" alt="Kafka's Die Verwandlung in a dark reading theme, the theme picker open above it."></a><figcaption><b>Seven themes.</b> The colours keep their meaning on each.</figcaption></figure>
       <figure><a href="media/subtitles.jpg"><img src="media/subtitles.jpg" width="1920" height="1080" loading="lazy" alt="A drawn film scene of a hut in a storm with a coloured German subtitle beneath it."></a><figcaption><b>Films.</b> German subtitles, coloured live.</figcaption></figure>
       <figure><a href="media/subtitle-card.jpg"><img src="media/subtitle-card.jpg" width="1920" height="1080" loading="lazy" alt="The film paused with a dictionary card for der Zauberer open over it."></a><figcaption><b>Tap a subtitle word</b> and the film waits.</figcaption></figure>
     </div>
   </section>
 
-  <section class="wrap" aria-labelledby="h-know">
+  <section class="wrap rv" aria-labelledby="h-know">
     <span class="eyebrow">Understand</span>
-    <h2 id="h-know">It reads the sentence, not just the word.</h2>
-    <p class="intro">A German parser works through every sentence: its structure, each word's base form, the cases. That is how a verb split across a sentence is put back together, and how one spelling can come out in three colours.</p>
+    <h2 id="h-know">Wherever the other half is, it finds it.</h2>
+    <p class="intro">A German parser works through every sentence: its structure, each word's base form, the cases. That is how a verb split across a sentence is put back together before the dictionary is asked.</p>
     <div class="shots two">
       <figure><a href="media/parser.jpg"><img src="media/parser.jpg" width="1920" height="1080" loading="lazy" alt="A parsed sentence with arcs between its words; ruft and an are joined into anrufen."></a><figcaption><b>The parser.</b> <i>ruft … an</i> becomes <i>anrufen</i>; <i>freut sich</i> becomes <i>sich freuen</i>.</figcaption></figure>
       <figure><a href="media/three-genders.jpg"><img src="media/three-genders.jpg" width="1920" height="1080" loading="lazy" alt="Die Band, das Band, der Band: the same word in pink, green and blue."></a><figcaption><b>One word, three genders:</b> the band, the ribbon, the volume.</figcaption></figure>
-      <figure><a href="media/sentence.jpg"><img src="media/sentence.jpg" width="1920" height="1080" loading="lazy" alt="Das Messer in green and die Messer in orange, the articles underlined."></a><figcaption><b>One or many.</b> <i>das Messer</i> is a knife, <i>die Messer</i> are knives.</figcaption></figure>
       <figure><a href="media/dictionary.jpg"><img src="media/dictionary.jpg" width="1920" height="1080" loading="lazy" alt="A dictionary card for der Apfelbaum, taken apart into Apfel and Baum."></a><figcaption><b>Tap any word.</b> Meaning, grammar, pronunciation; compounds taken apart.</figcaption></figure>
       <figure><a href="media/split-verbs.jpg"><img src="media/split-verbs.jpg" width="1920" height="1080" loading="lazy" alt="A tap on fügte opens the card for hinzufügen."></a><figcaption><b>Split verbs.</b> A tap on <i>fügte</i> answers with <i>hinzufügen</i>.</figcaption></figure>
-      <figure><a href="media/translate.jpg"><img src="media/translate.jpg" width="1920" height="1080" loading="lazy" alt="A selected sentence from Kafka shown in German and in English in a translator panel."></a><figcaption><b>Select a sentence</b> to translate it, hear it, or ask an assistant.</figcaption></figure>
+      <figure><a href="media/translate.jpg"><img src="media/translate.jpg" width="1920" height="1080" loading="lazy" alt="A selected sentence from Kafka shown in German and in English in a translator panel."></a><figcaption><b>Select a sentence</b> to translate it or hear it said.</figcaption></figure>
+      <figure><a href="media/assistant.jpg"><img src="media/assistant.jpg" width="1920" height="1080" loading="lazy" alt="An assistant app opened with the reader's own prompt and the selected sentence in its box."></a><figcaption><b>Ask an assistant.</b> Your prompt, the app you choose.</figcaption></figure>
     </div>
   </section>
 
-  <section class="wrap" aria-labelledby="h-facts">
+  <section class="wrap rv" aria-label="On your phone, and only there">
     <span class="eyebrow">On your phone, and only there</span>
-    <h2 id="h-facts">No account. No internet needed. No guessing.</h2>
     <div class="facts">
       <div><h3>No account</h3><p>Nothing to sign up for. Your books stay on your phone.</p></div>
       <div><h3>No internet needed</h3><p>The colouring, the OCR and the dictionary all work offline.</p></div>
       <div><h3>No guessing</h3><p>Rules, a dictionary and a parser decide each colour. What they cannot decide is left uncoloured.</p></div>
     </div>
     <ul class="has">
-      <li>PDF</li><li>EPUB</li><li>Scanned pages</li><li>Film subtitles</li><li>Offline dictionary</li><li>Seven themes</li><li>Read aloud</li>
+      <li>PDF</li><li>EPUB</li><li>Scanned books</li><li>Film subtitles</li><li>Offline dictionary</li><li>Seven themes</li><li>Read aloud</li>
     </ul>
   </section>
 
-  <div class="wrap end">
+  <div class="wrap end rv">
     <img src="media/chameleon.svg" alt="The ChamFlick chameleon, in the four gender colours." width="92" height="92">
     <h2>Bald auf deinem <span class="n">Handy</span>.</h2>
+    <p class="slogan">One glance, one tap, and you know the word.</p>
     <p>Coming soon for Android.</p>
   </div>
 </main>
 
 <footer class="wrap">
-  <p>The pictures are frames from the preview video, which is drawn from the app's own colours and dictionary answers. The app is still in development and details may change.</p>
+  <p>The pictures are frames from the preview video and its earlier cuts, which are drawn from the app's own colours and dictionary answers. The app is still in development and details may change.</p>
   <p>Texts shown: Kafka, <i>Die Verwandlung</i> (1915) and the Brothers Grimm, <i>Der Froschkönig</i> (1857), both in the public domain; <i>Der kleine Prinz</i> in our own German. Dictionary entries come from Wiktionary, CC BY-SA.</p>
-  <p>© 2026 Ali Padash. All rights reserved. The source code is not public.</p>
+  <p>The preview's music was written for it. Piano: Salamander Grand Piano by Alexander Holm, CC BY 3.0. Harp, marimba, glockenspiel and bass: VSCO 2 Community Edition, CC0.</p>
+  <p>© 2026 Ali Padash Sotoodeh. All rights reserved. The source code is not public.</p>
 </footer>
+
+<script>
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---- things come up as they are scrolled to
+  const seen = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); seen.unobserve(e.target); }
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".rv").forEach(el => seen.observe(el));
+
+  // ---- the guessing game: three words a round, an article to pick for each
+  const ROUNDS = [
+    [["Löffel", "m", "spoon"], ["Gabel", "f", "fork"], ["Messer", "n", "knife"]],
+    [["Mond", "m", "moon"], ["Sonne", "f", "sun"], ["Mädchen", "n", "girl"]],
+    [["Brücke", "f", "bridge"], ["Buch", "n", "book"], ["Tisch", "m", "table"]],
+    [["Brot", "n", "bread"], ["Käse", "m", "cheese"], ["Butter", "f", "butter"]],
+  ];
+  const ART = { m: "der", f: "die", n: "das" };
+  let round = 0, tries = 0, left = 0;
+  function deal() {
+    tries = 0; left = 3;
+    $("guess-ask").innerHTML = "<b>Which is which?</b> Pick the article for each word.";
+    $("guess-verdict").textContent = "";
+    const box = $("guess-words");
+    box.textContent = "";
+    for (const [word, g, en] of ROUNDS[round % ROUNDS.length]) {
+      const q = document.createElement("div");
+      q.className = "q";
+      const art = document.createElement("span");
+      art.className = "art";
+      for (const k of ["m", "f", "n"]) {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "chip"; b.textContent = ART[k];
+        b.setAttribute("aria-label", ART[k] + " " + word);
+        b.onclick = () => {
+          tries++;
+          if (k !== g) { b.classList.add("no"); b.disabled = true; return; }
+          art.textContent = ART[g];
+          q.classList.add("done", "g" + g);
+          if (--left === 0) verdict();
+        };
+        art.append(b);
+      }
+      const w = document.createElement("b"); w.className = "w"; w.textContent = word;
+      const e = document.createElement("span"); e.className = "en"; e.textContent = en;
+      q.append(art, w, e);
+      box.append(q);
+    }
+  }
+  function verdict() {
+    const v = $("guess-verdict");
+    const said = tries === 3 ? "Three out of three." : tries + " guesses for three words.";
+    v.innerHTML = "<span>" + said + "</span><strong>Three words. Three genders. No more guessing.</strong>";
+    const again = document.createElement("button");
+    again.type = "button"; again.className = "again"; again.textContent = "Three more";
+    again.onclick = () => { round++; deal(); };
+    v.append(again);
+  }
+  deal();
+
+  // ---- the page: a switch for the colours, a card for the word tapped
+  const WORDS = {
+    Fuchs: { g: "m", art: "der", pos: "NOUN", gram: "plural Füchse · genitive Fuchses", mean: "fox" },
+    Tag: { g: "m", art: "der", pos: "NOUN", gram: "plural Tage · genitive Tages or Tags", mean: "day", note: "Guten Tag: good day, hello." },
+    Prinz: { g: "m", art: "der", pos: "NOUN", gram: "plural Prinzen · genitive Prinzen", mean: "prince" },
+    Stimme: { g: "f", art: "die", pos: "NOUN", gram: "plural Stimmen", mean: "voice" },
+    Apfelbaum: { g: "m", art: "der", pos: "NOUN", gram: "plural Apfelbäume · genitive Apfelbaumes or Apfelbaums", mean: "apple tree",
+                 parts: [["Apfel", "apple (fruit)"], ["Baum", "tree"]], note: "A long word, taken apart." },
+    Verzeihung: { g: "f", art: "die", pos: "NOUN", gram: "genitive Verzeihung", mean: "pardon, forgiveness",
+                  parts: [["verzeihen", "to forgive"], ["-ung", "makes a noun of a verb"]], note: "Said alone: sorry!" },
+    Nachdenken: { g: "n", art: "das", pos: "NOUN", gram: "no plural", mean: "reflection, thinking it over",
+                  note: "The verb nachdenken, used as a noun. Verbs used as nouns are always neuter." },
+    Menschen: { g: "p", art: "die", pos: "NOUN · PLURAL", gram: "singular der Mensch", mean: "people, human beings",
+                note: "Orange is the plural, whatever the gender of the singular." },
+    "hinzufügen": { g: "v", art: "", pos: "VERB", gram: "past tense fügte hinzu · past participle hinzugefügt", mean: "to say (after saying something else), to add",
+                    parts: [["hinzu", "in addition, besides"], ["fügen", "to join"]], note: "One verb, split in two. Wherever the other half is, it finds it." },
+  };
+  const sheet = $("sheet"), card = $("card");
+  const el = (tag, cls, text) => { const x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; };
+  function show(word, tapped) {
+    const d = WORDS[word];
+    if (!d) return;
+    // a noun: the one tapped (or its first on the page); the verb: both its halves
+    const all = [...sheet.querySelectorAll("[data-w]")].filter(x => x.dataset.w === word);
+    sheet.querySelectorAll(".sel").forEach(x => x.classList.remove("sel"));
+    (d.g === "v" ? all : [tapped || all[0]]).forEach(x => x.classList.add("sel"));
+    card.className = "card g" + d.g;
+    card.textContent = "";
+    const head = el("div", "head");
+    if (d.art) head.append(el("i", "", d.art), " ");
+    head.append(el("b", "", word), el("span", "pos", d.pos));
+    card.append(head, el("div", "gram", d.gram), el("div", "mean", d.mean));
+    if (d.parts) {
+      const dl = el("dl", "parts");
+      for (const [a, b] of d.parts) dl.append(el("dt", "", a), el("dd", "", b));
+      card.append(dl);
+    }
+    if (d.note) card.append(el("p", "note", d.note));
+    void card.offsetWidth;                      // so that the same animation runs again
+    card.classList.add("swap");
+  }
+  sheet.addEventListener("click", e => {
+    const b = e.target.closest("[data-w]");
+    if (!b) return;
+    show(b.dataset.w, b);
+    if (matchMedia("(max-width: 860px)").matches) card.scrollIntoView({ block: "nearest", behavior: calm ? "auto" : "smooth" });
+  });
+  $("hint").addEventListener("click", e => { const b = e.target.closest("[data-w]"); if (b) show(b.dataset.w); });
+  // the colours come in as a wave, one noun after another, the first time the page is seen
+  sheet.querySelectorAll(".nn").forEach((x, i) => x.style.setProperty("--i", i));
+  const sw = $("switch");
+  const colours = on => { sheet.classList.toggle("on", on); sw.setAttribute("aria-pressed", on); };
+  sw.onclick = () => colours(sw.getAttribute("aria-pressed") !== "true");
+  if (!calm) {
+    colours(false);
+    new IntersectionObserver((entries, o) => {
+      if (entries.some(e => e.isIntersecting)) { setTimeout(() => colours(true), 350); o.disconnect(); }
+    }, { threshold: 0.45 }).observe(sheet);
+  }
+  show("Apfelbaum");
+
+  // ---- one word, three genders: the sentence changes, the word stays
+  const BAND = [
+    { g: "f", art: "Die", rest: "spielt laut.", en: "the band",
+      icon: '<path d="M42 90V30l50-12v58" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="29" cy="91" rx="15" ry="11" fill="currentColor"/><ellipse cx="79" cy="78" rx="15" ry="11" fill="currentColor"/>' },
+    { g: "n", art: "Das", rest: "ist rot.", en: "the ribbon",
+      icon: '<path d="M60 54C30 16 6 38 13 60c5 18 31 10 47-6zM60 54c30-38 54-16 47 6-5 18-31 10-47-6z" fill="currentColor"/><path d="M53 60 36 110l16-11 8-28 8 28 16 11-17-50z" fill="currentColor"/><circle cx="60" cy="56" r="10" fill="#fff"/>' },
+    { g: "m", art: "Der", rest: "hat 300 Seiten.", en: "the volume (of a book)",
+      icon: '<rect x="26" y="12" width="70" height="96" rx="7" fill="currentColor"/><rect x="26" y="12" width="15" height="96" rx="5" fill="rgba(0,0,30,.3)"/><path d="M52 38h32M52 54h32" stroke="#fff" stroke-width="7" stroke-linecap="round"/>' },
+  ];
+  const picks = [...document.querySelectorAll("#band .pick button")];
+  let which = 0, turning = calm ? 0 : setInterval(() => band((which + 1) % 3), 2800);
+  function band(i) {
+    which = i;
+    const b = BAND[i];
+    $("band-icon").innerHTML = b.icon;
+    $("band-icon").setAttribute("class", b.g);
+    $("band-line").innerHTML = '<i class="' + b.g + '">' + b.art + '</i> <b class="' + b.g + '">Band</b> ' + b.rest;
+    $("band-en").textContent = b.en;
+    picks.forEach((p, k) => p.setAttribute("aria-pressed", k === i));
+  }
+  picks.forEach((p, k) => p.onclick = () => { clearInterval(turning); band(k); });
+  band(0);
+})();
+</script>
 
 </body>
 </html>
